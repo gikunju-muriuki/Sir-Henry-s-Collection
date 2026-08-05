@@ -4,29 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sir Henry's Collection | Premium Footwear</title>
-    <!-- Google Fonts for a modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts for a modern, architectural look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* === BASE STYLES & VARIABLES === */
+        /* === LUXURY SOLID PALETTE & VARIABLES === */
         :root {
-            --bg-color: #f8f9fa;
-            --text-color: #1a1a1a;
+            --bg-color: #fafafa;
             --card-bg: #ffffff;
-            --accent-color: #000000;
-            --whatsapp-color: #25D366;
-            --transition-speed: 0.3s;
+            --text-primary: #0a0a0a;
+            --text-secondary: #707070;
+            --border-color: #e5e5e5;
+            --accent-black: #000000;
+            --accent-hover: #222222;
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-primary);
             overflow-x: hidden;
         }
 
@@ -35,66 +38,101 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 5%;
+            padding: 1.25rem 6%;
             background-color: var(--card-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.1rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            color: var(--text-primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
         }
 
         .social-links a {
             text-decoration: none;
-            color: var(--text-color);
-            margin-left: 1rem;
-            font-weight: 600;
-            transition: color var(--transition-speed);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: opacity 0.2s ease;
         }
 
         .social-links a:hover {
-            color: gray;
+            opacity: 0.5;
         }
 
-        /* === HERO SECTION === */
+        /* === EDITORIAL HERO SECTION === */
         .hero {
             text-align: center;
-            padding: 100px 20px;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 600px;
+            padding: 120px 20px 80px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        /* === UNIVERSAL PRODUCT CARD === */
+        .hero .eyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* === PRODUCT GRID LAYOUT === */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            padding: 0 6% 6rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* === HIGH-END PRODUCT CARD === */
         .product-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s ease, transform 0.3s ease;
             
             /* Scroll Animation Defaults */
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(30px);
         }
 
-        /* When IntersectionObserver triggers this class */
         .product-card.visible {
             opacity: 1;
             transform: translateY(0);
@@ -102,130 +140,136 @@
         }
 
         .product-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: var(--accent-black);
         }
 
+        /* === UNIFORM ASPECT RATIO MEDIA CONTAINER === */
+        .image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5; /* Forces high-fashion vertical ratio */
+            overflow: hidden;
+            background-color: #f2f2f2;
+            margin-bottom: 1.25rem;
+        }
 
         .image-protection-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    pointer-events: none; /* Allows click and video events through */
-}
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
 
+        /* Force images and videos to strictly fill the container */
+        .product-image,
+        .product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
+        .product-card:hover .product-image,
+        .product-card:hover .product-video {
+            transform: scale(1.04);
+        }
 
         /* === CARD DETAILS === */
         .product-info {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .product-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.25rem;
         }
 
         .product-name {
-            font-size: 1.25rem;
+            font-size: 1.05rem;
             font-weight: 600;
+            letter-spacing: -0.2px;
+            text-transform: uppercase;
         }
 
         .product-price {
-            font-size: 1.1rem;
-            color: #555;
-            font-weight: 400;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
-        /* === INTERACTIVE BUTTON === */
+        /* === MINIMALIST SOLID CTA BUTTON === */
         .whatsapp-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
+            background-color: var(--accent-black);
+            color: #ffffff;
+            border: 1px solid var(--accent-black);
+            padding: 14px 20px;
+            font-size: 0.8rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            transition: background-color var(--transition-speed), transform 0.1s;
+            gap: 10px;
+            transition: var(--transition);
             width: 100%;
+            margin-top: auto;
         }
 
         .whatsapp-btn:hover {
-            background-color: #333;
+            background-color: #ffffff;
+            color: var(--accent-black);
         }
 
         .whatsapp-btn:active {
-            transform: scale(0.96); /* Classic click interaction */
+            transform: scale(0.98);
         }
 
         .whatsapp-icon {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
         }
 
         /* === FOOTER === */
         footer {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
             background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
             margin-top: auto;
         }
 
-        /* === PRODUCT GRID (Prevents cards from stretching vertically in the same row) === */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem 5%;
-    max-width: 1400px;
-    margin: 0 auto 5rem;
-    align-items: start; /* <--- portrait & landscape cards align cleanly */
-}
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-/* === DYNAMIC MEDIA CONTAINER === */
-.image-container {
-    position: relative;
-    width: 100%;
-    /* REMOVED: height: 300px; - This allows natural media height */
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #f0f0f0;
-    margin-bottom: 1.5rem;
-}
-
-/* === ADAPTIVE MEDIA (IMAGES & VIDEOS) === */
-.product-image,
-.product-video {
-    width: 100%;
-    height: auto; /* <---  height adjusts naturally to portrait/landscape */
-    display: block; /* <--- remove bottom inline gaps */
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    transition: transform 0.5s ease;
-}
-
-.product-card:hover .product-image,
-.product-card:hover .product-video {
-    transform: scale(1.03);
-}
-        
-
-
-        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4rem; }
+            header { padding: 1.25rem 5%; }
+            .product-grid { padding: 0 5% 4rem; gap: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Sir Henry's Collection</div>
+        <div class="logo">Sir Henry's</div>
         <div class="social-links">
             <a href="https://www.tiktok.com/@sir_henrie?_r=1&_t=ZS-98cnftF9yQz" target="_blank">TikTok</a>
             <a href="https://wa.me/+254718270297" target="_blank">WhatsApp</a>
@@ -233,62 +277,29 @@
     </header>
 
     <section class="hero">
+        <span class="eyebrow">Autumn / Winter Collection</span>
         <h1>Walk in Style.</h1>
-        <p>Discover our latest collection of premium footwear.</p>
+        <p>Discover our minimal selection of engineered footwear built for durability and modern elegance.</p>
     </section>
 
     <main class="product-grid">
 
-
-        <!-- ==========================================
-     LOCAL VIDEO PRODUCT CARD
-     ========================================== -->
-<article class="product-card" data-name="Apex Speed Runner" data-price="$165.00">
-    <div class="image-container">
-        <!-- Protection Overlay (Blocks right-click and downloading) -->
-        <div class="image-protection-overlay"></div>
-        
-        <!-- Local Video Tag -->
-        <video class="product-video" loop muted playsinline webkit-playsinline preload="auto">
-    <source src="how-to.mp4" type="video/mp4">
-    Your browser is outdated.
-</video>
-
-        
-        
-
-
-    </div>
-    
-    <div class="product-info">
-        <h2 class="product-name">Apex Speed Runner</h2>
-        <span class="product-price">$165.00</span>
-        <button class="whatsapp-btn">
-            <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-            </svg>
-            Order on WhatsApp
-        </button>
-    </div>
-</article>
-
-        
-        <!-- ==========================================
-             PRODUCT CARD 1 (COPY AND PASTE THIS BLOCK)
-             ========================================== -->
-        <!-- Add your data into: data-name and data-price -->
-        <article class="product-card" data-name="Midnight Runners" data-price="$120.00">
+        <!-- PRODUCT CARD 1 (LOCAL VIDEO) -->
+        <article class="product-card" data-name="Apex Speed Runner" data-price="$165.00">
             <div class="image-container">
-                <!-- Protection Overlay (Blocks Right Click) -->
                 <div class="image-protection-overlay"></div>
-                <!-- Just change the src="" to update the image -->
-                <img class="product-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Shoe">
+                <video class="product-video" loop muted playsinline webkit-playsinline preload="auto">
+                    <source src="how-to.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
             </div>
+            
             <div class="product-info">
-                <h2 class="product-name">Midnight Runners</h2>
-                <span class="product-price">$120.00</span>
+                <div class="product-header-row">
+                    <h2 class="product-name">Apex Speed Runner</h2>
+                    <span class="product-price">$165.00</span>
+                </div>
                 <button class="whatsapp-btn">
-                    <!-- Simple SVG WhatsApp Icon -->
                     <svg class="whatsapp-icon" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
@@ -297,19 +308,41 @@
             </div>
         </article>
 
-        <!-- ==========================================
-             PRODUCT CARD 2 (Duplicated and modified)
-             ========================================== -->
+        <!-- PRODUCT CARD 2 (LOCAL IMAGE 1) -->
+        <article class="product-card" data-name="Midnight Runners" data-price="$120.00">
+            <div class="image-container">
+                <div class="image-protection-overlay"></div>
+                <img class="product-image" src="shoe-1.jpg" alt="Midnight Runners">
+            </div>
+            <div class="product-info">
+                <div class="product-header-row">
+                    <h2 class="product-name">Midnight Runners</h2>
+                    <span class="product-price">$120.00</span>
+                </div>
+                <button class="whatsapp-btn">
+                    <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg>
+                    Order on WhatsApp
+                </button>
+            </div>
+        </article>
+
+        <!-- PRODUCT CARD 3 (LOCAL IMAGE 2) -->
         <article class="product-card" data-name="Urban High-Tops" data-price="$150.00">
             <div class="image-container">
                 <div class="image-protection-overlay"></div>
-                <img class="product-image" src="https://images.unsplash.com/photo-1508138221679-760a23a2285b?w=600&q=80" alt="Shoe">
+                <img class="product-image" src="shoe-2.jpg" alt="Urban High-Tops">
             </div>
             <div class="product-info">
-                <h2 class="product-name">Urban High-Tops</h2>
-                <span class="product-price">$150.00</span>
+                <div class="product-header-row">
+                    <h2 class="product-name">Urban High-Tops</h2>
+                    <span class="product-price">$150.00</span>
+                </div>
                 <button class="whatsapp-btn">
-                    <svg class="whatsapp-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                    </svg>
                     Order on WhatsApp
                 </button>
             </div>
@@ -321,7 +354,7 @@
         <p>&copy; 2026 Sir Henry's Collection. All rights reserved.</p>
     </footer>
 
-    <!-- === JAVASCRIPT === -->
+    <!-- === JAVASCRIPT (UNTOUCHED LOGIC) === -->
     <script>
     // 1. WHATSAPP CONFIGURATION
     const WHATSAPP_NUMBER = "254718270297"; 
@@ -406,10 +439,7 @@
     document.querySelectorAll('.product-card').forEach(card => {
         observer.observe(card);
     });
-</script>
-
-
-
+    </script>
 
 </body>
 </html>
