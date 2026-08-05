@@ -106,7 +106,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        /* Protection overlay blocks right click / save */
+
+        /* This overlay sits on top of the image and blocks right-clicks/saving */
         .image-protection-overlay {
             position: absolute;
             top: 0;
@@ -115,6 +116,7 @@
             height: 100%;
             z-index: 10;
         }
+
 
         /* === CARD DETAILS === */
         .product-info {
@@ -158,7 +160,7 @@
         }
 
         .whatsapp-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.96); /* Classic click interaction */
         }
 
         .whatsapp-icon {
@@ -175,45 +177,48 @@
             margin-top: auto;
         }
 
-        /* === PRODUCT GRID === */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem 5%;
-            max-width: 1400px;
-            margin: 0 auto 5rem;
-            align-items: start;
-        }
+        /* === PRODUCT GRID (Prevents cards from stretching vertically in the same row) === */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 5%;
+    max-width: 1400px;
+    margin: 0 auto 5rem;
+    align-items: start; /* <--- portrait & landscape cards align cleanly */
+}
 
-        /* === DYNAMIC MEDIA CONTAINER === */
-        .image-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 5;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #f0f0f0;
-            margin-bottom: 1.5rem;
-        }
+/* === DYNAMIC MEDIA CONTAINER === */
+.image-container {
+    position: relative;
+    width: 100%;
+    /* REMOVED: height: 300px; - This allows natural media height */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    margin-bottom: 1.5rem;
+}
 
-        /* === ADAPTIVE MEDIA === */
-        .product-image,
-        .product-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            pointer-events: none;
-            user-select: none;
-            -webkit-user-drag: none;
-            transition: transform 0.5s ease;
-        }
+/* === ADAPTIVE MEDIA (IMAGES & VIDEOS) === */
+.product-image,
+.product-video {
+    width: 100%;
+    height: auto; /* <---  height adjusts naturally to portrait/landscape */
+    display: block; /* <--- remove bottom inline gaps */
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: transform 0.5s ease;
+}
 
-        .product-card:hover .product-image,
-        .product-card:hover .product-video {
-            transform: scale(1.03);
-        }
+.product-card:hover .product-image,
+.product-card:hover .product-video {
+    transform: scale(1.03);
+}
+        
+
+
+        
     </style>
 </head>
 <body>
@@ -233,44 +238,51 @@
 
     <main class="product-grid">
 
-        <!-- ==========================================
-             LOCAL VIDEO PRODUCT CARD
-             ========================================== -->
-        <article class="product-card" data-name="Apex Speed Runner" data-price="$165.00">
-            <div class="image-container">
-                <div class="image-protection-overlay"></div>
-                
-                <!-- Explicitly muted, inline-playing video tag for instant autoplay -->
-                <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
-                    <source src="how-to.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            
-            <div class="product-info">
-                <h2 class="product-name">Apex Speed Runner</h2>
-                <span class="product-price">$165.00</span>
-                <button class="whatsapp-btn">
-                    <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                    </svg>
-                    Order on WhatsApp
-                </button>
-            </div>
-        </article>
 
         <!-- ==========================================
-             PRODUCT CARD 1
+     LOCAL VIDEO PRODUCT CARD
+     ========================================== -->
+<article class="product-card" data-name="Apex Speed Runner" data-price="$165.00">
+    <div class="image-container">
+        <!-- Protection Overlay (Blocks right-click and downloading) -->
+        <div class="image-protection-overlay"></div>
+        
+        <!-- Local Video Tag -->
+        <video class="product-video" autoplay loop muted playsinline>
+            <source src="how-to.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="product-info">
+        <h2 class="product-name">Apex Speed Runner</h2>
+        <span class="product-price">$165.00</span>
+        <button class="whatsapp-btn">
+            <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+            </svg>
+            Order on WhatsApp
+        </button>
+    </div>
+</article>
+
+        
+        <!-- ==========================================
+             PRODUCT CARD 1 (COPY AND PASTE THIS BLOCK)
              ========================================== -->
+        <!-- Add your data into: data-name and data-price -->
         <article class="product-card" data-name="Midnight Runners" data-price="$120.00">
             <div class="image-container">
+                <!-- Protection Overlay (Blocks Right Click) -->
                 <div class="image-protection-overlay"></div>
+                <!-- Just change the src="" to update the image -->
                 <img class="product-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Shoe">
             </div>
             <div class="product-info">
                 <h2 class="product-name">Midnight Runners</h2>
                 <span class="product-price">$120.00</span>
                 <button class="whatsapp-btn">
+                    <!-- Simple SVG WhatsApp Icon -->
                     <svg class="whatsapp-icon" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                     </svg>
@@ -280,7 +292,7 @@
         </article>
 
         <!-- ==========================================
-             PRODUCT CARD 2
+             PRODUCT CARD 2 (Duplicated and modified)
              ========================================== -->
         <article class="product-card" data-name="Urban High-Tops" data-price="$150.00">
             <div class="image-container">
@@ -305,61 +317,54 @@
 
     <!-- === JAVASCRIPT === -->
     <script>
-        // 1. SET YOUR WHATSAPP NUMBER HERE
+        // 1. SET YOUR WHATSAPP NUMBER HERE (Include country code, no + or spaces)
         const WHATSAPP_NUMBER = "254718270297"; 
 
         // 2. DYNAMIC WHATSAPP ROUTING
+        // We select all buttons inside our product cards
         const orderButtons = document.querySelectorAll('.whatsapp-btn');
 
         orderButtons.forEach(button => {
             button.addEventListener('click', function() {
+                // Find the closest parent product card to read its data
                 const card = this.closest('.product-card');
+                
+                // Read the data-name and data-price attributes you set in the HTML
                 const productName = card.getAttribute('data-name');
                 const productPrice = card.getAttribute('data-price');
+                
+                // Construct the custom message
                 const message = `Hello! I would like to order the ${productName} (${productPrice}). Is it currently available?`;
+                
+                // Encode the message for the URL format
                 const encodedMessage = encodeURIComponent(message);
+                
+                // Build the WhatsApp URL
                 const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+                
+                // Open WhatsApp in a new tab
                 window.open(whatsappUrl, '_blank');
             });
         });
 
-        // 3. INSTANT PLAYBACK ON PAGE LOAD + SCROLL ANIMATION
-        function forcePlayVideos() {
-            const videos = document.querySelectorAll('video');
-            videos.forEach(video => {
-                video.muted = true;
-                video.play().catch(err => console.log("Autoplay waiting for user touch:", err));
-            });
-        }
-
-        // Trigger playback immediately when DOM loads & window finishes loading
-        document.addEventListener('DOMContentLoaded', forcePlayVideos);
-        window.addEventListener('load', forcePlayVideos);
-
-        // Fallback for mobile touch interaction if browser strictly blocks autoplay
-        document.addEventListener('touchstart', forcePlayVideos, { once: true });
-        document.addEventListener('click', forcePlayVideos, { once: true });
-
-        // Scroll animations observer
+        // 3. CLASSIC SCROLL ANIMATIONS (Intersection Observer)
+        // This triggers the 'visible' class when a card scrolls into view
         const observerOptions = {
-            threshold: 0.05,
-            rootMargin: "0px 0px -20px 0px"
+            threshold: 0.1, // Triggers when 10% of the card is visible
+            rootMargin: "0px 0px -50px 0px"
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    const video = entry.target.querySelector('video');
-                    if (video) {
-                        video.muted = true;
-                        video.play().catch(() => {});
-                    }
+                    // Stop observing once it has animated in
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
+        // Apply the observer to all cards
         document.querySelectorAll('.product-card').forEach(card => {
             observer.observe(card);
         });
