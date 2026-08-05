@@ -249,10 +249,11 @@
         <div class="image-protection-overlay"></div>
         
         <!-- Local Video Tag -->
-        <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+        <video class="product-video" loop muted playsinline webkit-playsinline preload="auto">
     <source src="how-to.mp4" type="video/mp4">
     Your browser is outdated.
-    </video>
+</video>
+
 
     </div>
     
@@ -337,7 +338,7 @@
         });
     });
 
-    // 3. SCROLL ANIMATION & VIDEO AUTOPLAY OBSERVER
+    // 3. SCROLL ANIMATION & ROBUST VIDEO AUTOPLAY
     const observerOptions = {
         threshold: 0.1,
         rootMargin: "0px 0px -50px 0px"
@@ -349,13 +350,27 @@
                 // Reveal the card animation
                 entry.target.classList.add('visible');
 
-                // Play video immediately when card enters the viewport
                 const video = entry.target.querySelector('.product-video');
                 if (video) {
-                    video.muted = true;
-                    video.play().catch(error => {
-                        console.log("Autoplay policy check:", error);
-                    });
+                    video.muted = true; // Enforce mobile policy
+
+                    // Delay playback by 150ms so opacity is > 0 (fixes iOS strict blocking)
+                    setTimeout(() => {
+                        const playPromise = video.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.warn("Autoplay blocked by OS (Likely Battery/Data Saver).");
+                                
+                                // FALLBACK: If OS blocks autoplay, let user tap the shoe to play it
+                                const container = entry.target.querySelector('.image-container');
+                                container.style.cursor = "pointer"; 
+                                container.addEventListener('click', () => {
+                                    video.play();
+                                }, { once: true });
+                            });
+                        }
+                    }, 150);
                 }
 
                 // Stop observing card once activated
@@ -369,6 +384,7 @@
         observer.observe(card);
     });
 </script>
+
 
 </body>
 </html>
