@@ -106,7 +106,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        /* This overlay sits on top of the image and blocks right-clicks/saving */
+        /* Protection overlay blocks right click / save */
         .image-protection-overlay {
             position: absolute;
             top: 0;
@@ -158,7 +158,7 @@
         }
 
         .whatsapp-btn:active {
-            transform: scale(0.96); /* Classic click interaction */
+            transform: scale(0.96);
         }
 
         .whatsapp-icon {
@@ -175,7 +175,7 @@
             margin-top: auto;
         }
 
-        /* === PRODUCT GRID (Prevents cards from stretching vertically in the same row) === */
+        /* === PRODUCT GRID === */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -190,19 +190,19 @@
         .image-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 4 / 5; /* Maintains proper shape while loading */
+            aspect-ratio: 4 / 5;
             border-radius: 12px;
             overflow: hidden;
             background-color: #f0f0f0;
             margin-bottom: 1.5rem;
         }
 
-        /* === ADAPTIVE MEDIA (IMAGES & VIDEOS) === */
+        /* === ADAPTIVE MEDIA === */
         .product-image,
         .product-video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Fills container properly */
+            object-fit: cover;
             display: block;
             pointer-events: none;
             user-select: none;
@@ -238,11 +238,10 @@
              ========================================== -->
         <article class="product-card" data-name="Apex Speed Runner" data-price="$165.00">
             <div class="image-container">
-                <!-- Protection Overlay (Blocks right-click and downloading) -->
                 <div class="image-protection-overlay"></div>
                 
-                <!-- Local Video Tag -->
-                <video class="product-video" autoplay loop muted playsinline preload="auto">
+                <!-- Explicitly muted, inline-playing video tag for instant autoplay -->
+                <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
                     <source src="how-to.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -324,24 +323,38 @@
             });
         });
 
-        // 3. CLASSIC SCROLL ANIMATIONS & VIDEO AUTOPLAY (Intersection Observer)
+        // 3. INSTANT PLAYBACK ON PAGE LOAD + SCROLL ANIMATION
+        function forcePlayVideos() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.muted = true;
+                video.play().catch(err => console.log("Autoplay waiting for user touch:", err));
+            });
+        }
+
+        // Trigger playback immediately when DOM loads & window finishes loading
+        document.addEventListener('DOMContentLoaded', forcePlayVideos);
+        window.addEventListener('load', forcePlayVideos);
+
+        // Fallback for mobile touch interaction if browser strictly blocks autoplay
+        document.addEventListener('touchstart', forcePlayVideos, { once: true });
+        document.addEventListener('click', forcePlayVideos, { once: true });
+
+        // Scroll animations observer
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
+            threshold: 0.05,
+            rootMargin: "0px 0px -20px 0px"
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    
-                    // Explicitly trigger playback on mobile when card becomes visible
                     const video = entry.target.querySelector('video');
                     if (video) {
                         video.muted = true;
-                        video.play().catch(err => console.log("Autoplay prevented:", err));
+                        video.play().catch(() => {});
                     }
-
                     observer.unobserve(entry.target);
                 }
             });
