@@ -249,10 +249,11 @@
         <div class="image-protection-overlay"></div>
         
         <!-- Local Video Tag -->
-        <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+        <video class="product-video" loop muted playsinline webkit-playsinline preload="auto">
     <source src="how-to.mp4" type="video/mp4">
     Your browser is outdated.
-        </video>
+</video>
+
         
         
 
@@ -353,41 +354,46 @@
                 entry.target.classList.add('visible');
 
                 const video = entry.target.querySelector('.product-video');
+                const container = entry.target.querySelector('.image-container');
+
                 if (video) {
-                    // Force strict mobile mute policies
-                    video.defaultMuted = true;
+                    // Force strict mute policies required by mobile browsers
                     video.muted = true;
+                    video.defaultMuted = true;
                     video.playsInline = true;
 
-                    const attemptPlay = () => {
-                        const playPromise = video.play();
+                    // THE HAMMER METHOD: Try to play every 100ms as the opacity fades from 0 to 1
+                    let attempts = 0;
+                    const tryPlay = setInterval(() => {
+                        attempts++;
                         
-                        if (playPromise !== undefined) {
-                            playPromise.catch(error => {
-                                console.warn("Autoplay blocked by OS (Data/Battery Saver active):", error);
-                                
-                                // FALLBACK: If OS explicitly denies autoplay, allow tap to play
-                                const container = entry.target.querySelector('.image-container');
-                                container.style.cursor = "pointer"; 
-                                container.addEventListener('click', () => {
-                                    video.play();
-                                }, { once: true });
-                            });
+                        // Only try to play if it's currently paused
+                        if (video.paused) {
+                            const playPromise = video.play();
+                            
+                            if (playPromise !== undefined) {
+                                playPromise.then(() => {
+                                    // Success! The browser finally accepted it.
+                                    clearInterval(tryPlay);
+                                }).catch(error => {
+                                    // If it fails 15 times (1.5 seconds), the browser is firmly blocking it.
+                                    if (attempts >= 15) {
+                                        clearInterval(tryPlay);
+                                        console.warn("Browser firmly blocked autoplay. Initializing tap-to-play fallback.");
+                                        
+                                        // Initialize fallback
+                                        container.style.cursor = "pointer"; 
+                                        container.addEventListener('click', () => {
+                                            video.play();
+                                        }, { once: true });
+                                    }
+                                });
+                            }
+                        } else {
+                            // If it's already playing, clear the interval
+                            clearInterval(tryPlay);
                         }
-                    };
-
-                    const onReadyToPlay = () => {
-                        // Wait 850ms to ensure the 0.8s CSS opacity transition is 100% complete.
-                        // Android Chrome strictly blocks autoplay on semi-transparent elements.
-                        setTimeout(attemptPlay, 850); 
-                    };
-
-                    // Only attempt to play once the video metadata is actually ready
-                    if (video.readyState >= 2) {
-                        onReadyToPlay();
-                    } else {
-                        video.addEventListener('canplay', onReadyToPlay, { once: true });
-                    }
+                    }, 100); 
                 }
 
                 // Stop observing card once activated
@@ -401,6 +407,7 @@
         observer.observe(card);
     });
 </script>
+
 
 
 
