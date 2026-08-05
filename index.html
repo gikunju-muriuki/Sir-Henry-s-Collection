@@ -319,73 +319,56 @@
 
     <!-- === JAVASCRIPT === -->
     <script>
-        // 1. SET YOUR WHATSAPP NUMBER HERE (Include country code, no + or spaces)
-        const WHATSAPP_NUMBER = "254718270297"; 
+    // 1. WHATSAPP CONFIGURATION
+    const WHATSAPP_NUMBER = "254718270297"; 
 
-        // 2. DYNAMIC WHATSAPP ROUTING
-        // We select all buttons inside our product cards
-        const orderButtons = document.querySelectorAll('.whatsapp-btn');
-
-        orderButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Find the closest parent product card to read its data
-                const card = this.closest('.product-card');
-                
-                // Read the data-name and data-price attributes you set in the HTML
-                const productName = card.getAttribute('data-name');
-                const productPrice = card.getAttribute('data-price');
-                
-                // Construct the custom message
-                const message = `Hello! I would like to order the ${productName} (${productPrice}). Is it currently available?`;
-                
-                // Encode the message for the URL format
-                const encodedMessage = encodeURIComponent(message);
-                
-                // Build the WhatsApp URL
-                const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-                
-                // Open WhatsApp in a new tab
-                window.open(whatsappUrl, '_blank');
-            });
+    // 2. WHATSAPP CLICK HANDLERS
+    const orderButtons = document.querySelectorAll('.whatsapp-btn');
+    orderButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const card = this.closest('.product-card');
+            const productName = card.getAttribute('data-name');
+            const productPrice = card.getAttribute('data-price');
+            
+            const message = `Hello! I would like to order the ${productName} (${productPrice}). Is it currently available?`;
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
         });
+    });
 
-        // 3. CLASSIC SCROLL ANIMATIONS (Intersection Observer)
-        // This triggers the 'visible' class when a card scrolls into view
-        const observerOptions = {
-            threshold: 0.1, // Triggers when 10% of the card is visible
-            rootMargin: "0px 0px -50px 0px"
-        };
+    // 3. SCROLL ANIMATION & VIDEO AUTOPLAY OBSERVER
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    // Stop observing once it has animated in
-                    observer.unobserve(entry.target);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Reveal the card animation
+                entry.target.classList.add('visible');
+
+                // Play video immediately when card enters the viewport
+                const video = entry.target.querySelector('.product-video');
+                if (video) {
+                    video.muted = true;
+                    video.play().catch(error => {
+                        console.log("Autoplay policy check:", error);
+                    });
                 }
-            });
-        }, observerOptions);
 
-        // Apply the observer to all cards
-        document.querySelectorAll('.product-card').forEach(card => {
-            observer.observe(card);
+                // Stop observing card once activated
+                observer.unobserve(entry.target);
+            }
         });
+    }, observerOptions);
 
+    // Apply observer to all product cards
+    document.querySelectorAll('.product-card').forEach(card => {
+        observer.observe(card);
+    });
+</script>
 
-        // Programmatically enforce muted autoplay on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const video = document.querySelector('.product-video');
-    if (video) {
-        video.muted = true; // Browser policy requirement
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay failed or was blocked by browser policy:", error);
-            });
-        }
-    }
-});
-        
-    </script>
 </body>
 </html>
