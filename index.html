@@ -107,15 +107,16 @@
         }
 
 
-        /* This overlay sits on top of the image and blocks right-clicks/saving */
         .image-protection-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-        }
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none; /* Allows click and video events through */
+}
+
 
 
         /* === CARD DETAILS === */
@@ -248,10 +249,11 @@
         <div class="image-protection-overlay"></div>
         
         <!-- Local Video Tag -->
-        <video class="product-video" autoplay loop muted playsinline>
-            <source src="how-to.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+    <source src="how-to.mp4" type="video/mp4">
+    Your browser is outdated.
+    </video>
+
     </div>
     
     <div class="product-info">
@@ -368,6 +370,22 @@
         document.querySelectorAll('.product-card').forEach(card => {
             observer.observe(card);
         });
+
+
+        // Programmatically enforce muted autoplay on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.querySelector('.product-video');
+    if (video) {
+        video.muted = true; // Browser policy requirement
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Autoplay failed or was blocked by browser policy:", error);
+            });
+        }
+    }
+});
+        
     </script>
 </body>
 </html>
