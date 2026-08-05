@@ -249,10 +249,11 @@
         <div class="image-protection-overlay"></div>
         
         <!-- Local Video Tag -->
-        <video class="product-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+        <video class="product-video" loop muted playsinline webkit-playsinline preload="auto">
     <source src="how-to.mp4" type="video/mp4">
     Your browser is outdated.
-</video>
+        </video>
+        
 
 
     </div>
@@ -352,17 +353,19 @@
 
                 const video = entry.target.querySelector('.product-video');
                 if (video) {
-                    video.muted = true; // Enforce mobile policy
+                    // Force strict mobile mute policies
+                    video.defaultMuted = true;
+                    video.muted = true;
+                    video.playsInline = true;
 
-                    // Delay playback by 150ms so opacity is > 0 (fixes iOS strict blocking)
-                    setTimeout(() => {
+                    const attemptPlay = () => {
                         const playPromise = video.play();
                         
                         if (playPromise !== undefined) {
                             playPromise.catch(error => {
-                                console.warn("Autoplay blocked by OS (Likely Battery/Data Saver).");
+                                console.warn("Autoplay blocked by OS (Data/Battery Saver active):", error);
                                 
-                                // FALLBACK: If OS blocks autoplay, let user tap the shoe to play it
+                                // FALLBACK: If OS explicitly denies autoplay, allow tap to play
                                 const container = entry.target.querySelector('.image-container');
                                 container.style.cursor = "pointer"; 
                                 container.addEventListener('click', () => {
@@ -370,7 +373,20 @@
                                 }, { once: true });
                             });
                         }
-                    }, 150);
+                    };
+
+                    const onReadyToPlay = () => {
+                        // Wait 850ms to ensure the 0.8s CSS opacity transition is 100% complete.
+                        // Android Chrome strictly blocks autoplay on semi-transparent elements.
+                        setTimeout(attemptPlay, 850); 
+                    };
+
+                    // Only attempt to play once the video metadata is actually ready
+                    if (video.readyState >= 2) {
+                        onReadyToPlay();
+                    } else {
+                        video.addEventListener('canplay', onReadyToPlay, { once: true });
+                    }
                 }
 
                 // Stop observing card once activated
@@ -384,6 +400,7 @@
         observer.observe(card);
     });
 </script>
+
 
 
 </body>
